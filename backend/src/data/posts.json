@@ -1,0 +1,206 @@
+[
+  {
+    "id": 1,
+    "slug": "getting-started-with-react-hooks",
+    "title": "Getting Started with React Hooks",
+    "excerpt": "Hooks let function components own state, side effects and refs without classes. Here is the mental model that makes them click.",
+    "content": "Before hooks, any component that needed state had to be a class. `useState` and `useEffect` changed that by attaching behaviour to the render itself, so a function component can own state, run side effects and keep a reference between renders.\n\nThe key mental model is that a component is just a function that runs again on every render. `useState` returns the current value plus a setter; calling the setter schedules another render with the new value. Nothing is mutated in place, everything is re-derived from props and state.\n\n`useEffect` is where side effects live: fetching data, subscribing to a browser API, syncing a value to `localStorage`. The dependency array is the contract. An empty array means \"run once after the first render\", and a list of values means \"re-run whenever one of these changes\".\n\nOnce you internalise those two hooks, the rest (useMemo, useCallback, useRef, custom hooks) are variations on the same theme: a function that plugs into React's render cycle and cleans up after itself.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "React",
+    "tags": ["react", "hooks", "frontend"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20React%20hooks%2C%20abstract%20cyan%20and%20violet%20gradient%2C%20clean%20geometric%20shapes%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-01-12",
+    "readingTimeMinutes": 6,
+    "featured": true
+  },
+  {
+    "id": 2,
+    "slug": "building-rest-apis-with-express",
+    "title": "Building REST APIs with Express",
+    "excerpt": "Routing, middleware and error handling — the three pillars of a predictable Express service.",
+    "content": "An Express application is a pipeline of middleware functions. A request enters at the top, flows through logger and body parsers, reaches the matching route handler, and either responds or calls `next(err)` to fall into the error handler at the bottom.\n\nKeep routes thin. A route should parse the request, delegate to a service or repository, and shape the response. Business rules belong in a separate layer so they can be tested without spinning up an HTTP server.\n\nError handling is what separates a demo from an API. Throw a typed error with a status code from anywhere in the stack, forward it with `next(err)`, and let a single error middleware translate it into a consistent JSON payload. Clients then get the same shape whether the failure was a 404, a validation error or an unexpected crash.\n\nAdd `cors` for browser clients, `morgan` for request logs, and a health endpoint for your deploy platform. That small set of conventions gets you a long way before you need anything heavier.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Node.js",
+    "tags": ["node", "express", "api"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20Node.js%20REST%20APIs%2C%20green%20and%20dark%20slate%20palette%2C%20server%20and%20data%20flow%20lines%2C%20minimal%20geometric&image_size=landscape_4_3",
+    "publishedAt": "2026-01-20",
+    "readingTimeMinutes": 8,
+    "featured": true
+  },
+  {
+    "id": 3,
+    "slug": "understanding-async-await-in-javascript",
+    "title": "Understanding async/await in JavaScript",
+    "excerpt": "Promises with nicer syntax — plus the three pitfalls that catch almost everyone.",
+    "content": "`async/await` is syntactic sugar over promises. An `async` function always returns a promise, and `await` pauses that function until the promise settles, handing you the resolved value or throwing the rejection.\n\nThe first pitfall is sequential awaits. Writing `await a(); await b();` when the two calls are independent serialises them. Start both promises first, then await together with `Promise.all`.\n\nThe second is forgetting that `await` inside a loop is usually what you want for correctness but rarely what you want for throughput. `for...of` with `await` runs strictly in order; `Promise.all(items.map(...))` runs them concurrently with a shared failure mode.\n\nThe third is unhandled rejections. A missing `try/catch` around `await` means the error escapes to the runtime instead of your error handler. Wrap the boundary, log there, and let everything deeper throw.\n\nUnderstand those three and async code stops being mysterious.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "async", "promises"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20asynchronous%20JavaScript%2C%20amber%20and%20navy%20palette%2C%20overlapping%20time%20flow%20shapes%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-02-02",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 4,
+    "slug": "css-grid-vs-flexbox",
+    "title": "CSS Grid vs Flexbox: choosing the right layout tool",
+    "excerpt": "Two-dimensional thinking versus one-dimensional flow. Pick the tool that matches the axis you actually have.",
+    "content": "Flexbox lays out content along a single axis. You give it a row of items, it distributes the free space, and items size themselves based on content and the `flex` shorthand. Grid lays out along two axes at once: you define tracks, and items are placed into cells.\n\nA useful rule of thumb: if the layout is a line of things, use flexbox. If the layout is a table-like structure where rows and columns both matter, use grid.\n\nIn practice you will mix them. A page shell is a grid (`header / main / footer` rows), the card list inside `main` is a grid with `repeat(auto-fill, minmax(280px, 1fr))`, and the toolbar inside each card is flexbox.\n\nModern grid also handles the awkward cases that used to need hacks: equal-height columns, sticky footers, and responsive card walls without a single media query.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "CSS",
+    "tags": ["css", "layout", "frontend"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20CSS%20layout%2C%20grid%20and%20flexbox%20diagrams%2C%20coral%20and%20teal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-02-11",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 5,
+    "slug": "state-management-in-react",
+    "title": "State management in React without the ceremony",
+    "excerpt": "Most apps do not need a global store. They need clear ownership of state and a couple of well-placed contexts.",
+    "content": "The first question is not \"which library\" but \"who owns this state\". State that only one component reads belongs in that component. State shared by two siblings belongs in their closest common parent. Only state that many distant branches need earns a place in a store.\n\nReact's built-in tools cover more ground than people expect. `useState` for local values, `useReducer` when transitions get complicated, `useContext` for genuinely app-wide concerns such as the current user or a theme.\n\nContext is not a state manager. It is a transport mechanism. Pair it with `useReducer` and memoised values and you have a small, predictable store with no dependency to maintain.\n\nReach for an external library when you need devtools, middleware, server-state caching or time-travel debugging. Until then, colocated state and a couple of contexts keep the app easier to reason about.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "React",
+    "tags": ["react", "state", "architecture"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20React%20state%20management%2C%20blue%20and%20pink%20gradient%2C%20connected%20nodes%20diagram%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-02-24",
+    "readingTimeMinutes": 9,
+    "featured": false
+  },
+  {
+    "id": 6,
+    "slug": "node-project-structure-best-practices",
+    "title": "A Node.js project structure that scales",
+    "excerpt": "Group by feature, keep the edges thin, and let dependencies point in one direction.",
+    "content": "The most common failure mode in a growing Node service is a `controllers/`, `services/` and `models/` trio that balloons until every change touches all three folders. Feature folders age better: everything about posts lives under `posts/`.\n\nKeep entry points thin. `server.js` starts the process, `app.js` composes middleware and routes, and neither contains business logic. That makes the app importable from tests without opening a port.\n\nLet dependencies point inward. Routes may import services, services may not import routes. Data access sits behind a repository so swapping a JSON file for a database is a one-file change.\n\nFinally, pin your conventions in the repository: scripts in `package.json`, configuration from environment variables, and a `.env.example` that documents every variable the app reads.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Node.js",
+    "tags": ["node", "architecture", "best-practices"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20Node.js%20project%20structure%2C%20folder%20tree%20abstraction%2C%20indigo%20and%20mint%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-03-05",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 7,
+    "slug": "pagination-patterns-for-rest-apis",
+    "title": "Pagination patterns for REST APIs",
+    "excerpt": "Offset, cursor, and why the metadata you return matters more than the technique you pick.",
+    "content": "Offset pagination is the familiar one: `?page=2&limit=10`. It maps directly to SQL `LIMIT` and `OFFSET`, it is trivially cacheable, and it is easy to render as numbered buttons. Its weakness is drift — rows inserted while a user pages through can shift items between pages.\n\nCursor pagination replaces the page number with an opaque marker, usually the last item's id or timestamp. It stays stable under writes and performs better deep into a dataset, at the cost of jumping straight to \"page 7\".\n\nWhatever you choose, return the envelope. Alongside `data`, send `page`, `limit`, `total` and `totalPages`, plus `hasNextPage` and `hasPrevPage`. Clients should never have to infer whether another request is worth making.\n\nValidate the inputs too. Reject a limit of `0`, cap it at something sane like 50, and fall back to defaults instead of returning a 500 when a client sends `page=abc`.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "API Design",
+    "tags": ["api", "rest", "pagination"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20REST%20API%20pagination%2C%20stacked%20cards%20and%20pages%2C%20slate%20blue%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-03-16",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 8,
+    "slug": "debugging-javascript-like-a-pro",
+    "title": "Debugging JavaScript like a pro",
+    "excerpt": "Stop sprinkling console.log. Form a hypothesis, minimise the repro, then let the debugger answer the question.",
+    "content": "Debugging is a loop: observe, hypothesise, test, repeat. Logging is a way to observe, but it is a blunt one — you only see what you thought to print.\n\nStart by shrinking the problem. Reproduce it in the smallest possible surface: one file, one function call, one input. Half of all bugs disappear during that step, and the rest become obvious.\n\nThe browser devtools debugger for frontend code and `node --inspect-brk` for the backend let you pause execution and inspect the real values in scope. Conditional breakpoints and watch expressions turn a slow log-and-rerun cycle into a single pass.\n\nWhen the bug is timing-related, read the async boundaries first: a stale closure, a missing `await`, or an effect that runs before its dependency is ready. Nine times out of ten the culprit is a value captured from an earlier render.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "debugging", "tooling"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20JavaScript%20debugging%2C%20magnifier%20over%20code%20lines%2C%20orange%20and%20deep%20blue%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-03-27",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 9,
+    "slug": "typescript-for-react-developers",
+    "title": "TypeScript for React developers",
+    "excerpt": "Enough types to catch real bugs — without turning your components into type puzzles.",
+    "content": "TypeScript pays for itself fastest at the boundaries: props, API responses and event handlers. Type those and the compiler starts finding mistakes for free.\n\nFor props, a plain `type Props = { ... }` is enough. Avoid over-abstracting with generics until you actually need to reuse a component across shapes.\n\nFor API data, describe the response envelope once and reuse it everywhere. A `Post` interface plus a `Paginated<T>` wrapper gives you autocomplete in the UI layer and a single place to update when the contract changes.\n\nUse discriminated unions for loading states: `{ status: 'loading' } | { status: 'success', data: T } | { status: 'error', error: string }`. The compiler then guarantees you cannot read `data` before checking the status — the exact class of bug that makes UI code fragile.\n\nTurn on `strict` from day one. Retrofitting it later is far more painful than writing against it from the start.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "TypeScript",
+    "tags": ["typescript", "react", "types"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20TypeScript%20types%2C%20blue%20and%20white%20palette%2C%20abstract%20brackets%20and%20labels%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-04-07",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 10,
+    "slug": "optimizing-web-performance-core-web-vitals",
+    "title": "Optimising for Core Web Vitals",
+    "excerpt": "LCP, INP and CLS explained in terms of the decisions you actually control.",
+    "content": "Largest Contentful Paint measures when the biggest element in the viewport finishes painting. Most of the time it is your hero image or a web font, so the fixes are concrete: serve modern formats, set explicit dimensions, preload the one image that matters.\n\nInteraction to Next Paint replaced the old first-input metric. It rewards keeping long tasks short — break up heavy work, defer non-critical JavaScript, and avoid re-rendering an entire tree to update one row.\n\nCumulative Layout Shift punishes content that moves after it renders. Reserve space for images and embeds, avoid injecting banners above existing content, and prefer `font-display: swap` with a metric-compatible fallback font.\n\nMeasure on real devices with real network conditions. A score from a fast laptop on wifi tells you very little about the users who will actually judge your site.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Performance",
+    "tags": ["performance", "web-vitals", "frontend"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20web%20performance%20metrics%2C%20speedometer%20and%20charts%2C%20lime%20green%20and%20charcoal%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-04-19",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 11,
+    "slug": "testing-react-apps-with-vitest",
+    "title": "Testing React apps with Vitest",
+    "excerpt": "A practical test pyramid for components: behaviour first, implementation rarely.",
+    "content": "The goal of a component test is to describe behaviour a user would recognise: renders the loading state, shows an error when the request fails, moves to the next page when the button is clicked.\n\nVitest plus React Testing Library gives you exactly that vocabulary. `render`, `screen.findByRole`, `userEvent.click` — all of it queries the DOM the way a user perceives it, which is why the tests survive refactors.\n\nMock at the network boundary, not the module boundary. Stub `fetch` or your API client and let the real components, hooks and reducers run. You get integration coverage without a running server.\n\nKeep the pyramid in mind. A handful of end-to-end smoke tests, a solid band of integration tests, and unit tests for pure logic such as pagination maths and formatters. That mix finds bugs quickly and does not slow your pipeline to a crawl.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Testing",
+    "tags": ["testing", "vitest", "react"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20software%20testing%2C%20checklist%20and%20test%20tubes%2C%20purple%20and%20yellow%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-04-30",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 12,
+    "slug": "from-junior-to-senior-developer",
+    "title": "From junior to senior: the skills nobody assigns you",
+    "excerpt": "Writing code is the entry ticket. Judgement, communication and scope are the career.",
+    "content": "Junior engineers are measured on tasks completed. Senior engineers are measured on problems removed. The shift happens when you stop waiting for a ticket to be perfectly specified and start clarifying the goal behind it.\n\nCommunication compounds faster than any framework skill. Writing a short, clear proposal before building, and a short, clear summary after shipping, makes your work visible and reviews painless.\n\nLearn to estimate in ranges and to say \"I don't know yet, here is how I would find out\". Both are more valuable than false confidence, and both build the trust that gets you bigger scope.\n\nFinally, invest in debugging and reading unfamiliar code. Every new language and framework becomes cheap once you can navigate a codebase you have never seen and find the line that is lying to you.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Career",
+    "tags": ["career", "growth", "soft-skills"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20developer%20career%20growth%2C%20ascending%20steps%20and%20nodes%2C%20warm%20orange%20and%20plum%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-05-09",
+    "readingTimeMinutes": 5,
+    "featured": false
+  }
+]

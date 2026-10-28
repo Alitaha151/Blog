@@ -1,0 +1,20 @@
+{
+  "name": "blog-api-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Express REST API that serves a static blog dataset (list with pagination + single post by slug)",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0"
+  }
+}
