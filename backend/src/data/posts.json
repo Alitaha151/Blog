@@ -202,5 +202,855 @@
     "publishedAt": "2026-05-09",
     "readingTimeMinutes": 5,
     "featured": false
+  },
+  {
+    "id": 13,
+    "slug": "useeffect-cleanup-functions",
+    "title": "useEffect cleanup functions, explained properly",
+    "excerpt": "Every effect that starts something should be able to stop it. The cleanup is not optional polish.",
+    "content": "An effect that subscribes, starts a timer or opens a connection owns a resource. If the component unmounts without releasing it, you leak. The cleanup function returned from `useEffect` is where that release happens.\n\nThe rule that surprises people is that React also runs the cleanup before re-running the effect on the next dependency change. That is deliberate: it guarantees the effect always sees a consistent world instead of layering a second subscription on top of the first.\n\nA timer example makes it concrete. Start `setInterval` inside the effect, return `clearInterval`. Skip the return and you have two intervals after the dependency changes once, three after it changes twice.\n\nFor data fetching the cleanup is usually an `AbortController`. Abort the request in the return function and the effect ignores the result if the component has already moved on — which is exactly the fix for the classic setState-after-unmount warning.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "React",
+    "tags": ["react", "hooks", "use-effect"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20React%20useEffect%20cleanup%2C%20loop%20arrows%20and%20plug%20shapes%2C%20teal%20and%20violet%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-05-14",
+    "readingTimeMinutes": 6,
+    "featured": true
+  },
+  {
+    "id": 14,
+    "slug": "node-streams-explained",
+    "title": "Node.js streams without the fear",
+    "excerpt": "Readable, writable, transform, pipeline — four names that cover almost every streaming task you will meet.",
+    "content": "A stream is a sequence of data delivered in chunks instead of all at once. That single property is why you can process a 2 GB file on a laptop with 8 GB of RAM: you never hold the whole thing.\n\nA readable produces data, a writable consumes it, and a transform sits in the middle changing each chunk as it passes. `pipe` wires them together, but `pipeline` from `stream/promises` is the modern choice because it propagates errors and destroys every stream in the chain when one fails.\n\nBackpressure is the concept worth internalising. When a writable cannot keep up, it signals the readable to slow down rather than buffering without limit. Ignore it and a fast producer plus a slow consumer becomes an out-of-memory crash.\n\nFor JSON APIs the common pattern is a line-delimited export: read a cursor, write each record with `JSON.stringify` plus a newline, and let the client parse the stream. The memory profile stays flat no matter how large the dataset grows.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Node.js",
+    "tags": ["node", "streams", "performance"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20Node.js%20streams%2C%20flowing%20data%20chunks%20and%20pipes%2C%20green%20and%20slate%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-05-18",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 15,
+    "slug": "javascript-array-methods-you-actually-need",
+    "title": "The JavaScript array methods you actually need",
+    "excerpt": "map, filter, reduce and find cover the vast majority of loops you write. The rest are details.",
+    "content": "A `for` loop that builds one array from another is almost always a `map`. A loop that builds an array conditionally is a `filter`. Learning to see those two patterns removes a surprising number of lines from a codebase.\n\n`reduce` is the one people avoid, and it earns a bad reputation mostly from being used where `map` or `filter` would be clearer. Where it shines is genuine accumulation: summing totals, grouping by a key, building a lookup object in a single pass.\n\n`find` and `some` short-circuit, which means they stop as soon as they have an answer. That distinction matters on large arrays where a `filter` plus `[0]` would scan everything.\n\nOne caution: `sort` mutates. In a React render path or a Redux reducer that mutation is a bug. Copy first with the spread operator, then sort the copy.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "arrays", "fundamentals"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20JavaScript%20array%20methods%2C%20rows%20of%20abstract%20blocks%2C%20amber%20and%20navy%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-05-21",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 16,
+    "slug": "css-custom-properties-in-practice",
+    "title": "CSS custom properties in practice",
+    "excerpt": "Variables that live in the cascade, not in a preprocessor. That difference unlocks theming for free.",
+    "content": "Unlike Sass variables, custom properties are resolved at runtime by the browser. They participate in the cascade and in inheritance, which is what makes theming possible without rebuilding a stylesheet.\n\nDefine your tokens once on `:root` — colours, spacing steps, radii, font sizes — then read them everywhere with `var(--token)`. A design change becomes a one-line edit rather than a search and replace.\n\nBecause they inherit, a component can override a token for its own subtree and every descendant picks it up. A dark section sets `--surface` and every card inside flips without any of them knowing about dark mode.\n\nThey also work in places preprocessor variables cannot: inline styles set from JavaScript, media queries driven by a single value, and fallbacks with `var(--token, red)` for progressive enhancement.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "CSS",
+    "tags": ["css", "theming", "design-tokens"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20CSS%20custom%20properties%2C%20swatches%20and%20variables%2C%20coral%20and%20teal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-05-25",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 17,
+    "slug": "designing-idempotent-apis",
+    "title": "Designing idempotent APIs",
+    "excerpt": "Retries are inevitable. Idempotency keys are how you make them safe.",
+    "content": "Networks fail in the worst possible window: after the server has done the work but before the client hears about it. The client retries, and without protection the work happens twice.\n\nHTTP already gives you idempotency for free on GET, PUT and DELETE — repeating them has the same effect as doing them once. The problem is POST, which creates something new every time.\n\nThe standard fix is an idempotency key. The client sends a unique header per logical operation, the server records the key with its result, and any repeat with the same key returns the stored response instead of performing the action again.\n\nCombine that with a sensible retention window and a conflict response when the same key arrives with a different body, and your create endpoints survive flaky mobile networks and over-eager retry middleware alike.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "API Design",
+    "tags": ["api", "reliability", "rest"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20API%20idempotency%2C%20repeated%20arrows%20collapsing%20to%20one%2C%20slate%20blue%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-05-28",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 18,
+    "slug": "typescript-generics-in-practice",
+    "title": "TypeScript generics in practice",
+    "excerpt": "Generics are for relationships between types, not for showing off. Start with the simplest signature that works.",
+    "content": "A generic is a way to say \"this type varies, but the variation is consistent\". `function first<T>(items: T[]): T` promises that whatever you put in comes back out with the same type — lose the generic and you are back to `any`.\n\nThe moment they pay off is when two positions must agree. A `useApi` hook that returns the same shape the fetcher produced, a repository that returns the model it was constructed with, an event emitter where the listener argument matches the emitter's payload.\n\nConstraints are where generics stop being magic. `T extends { id: string }` lets the body use `id` safely while still preserving the caller's concrete type.\n\nAvoid the trap of adding type parameters a function does not need. If one call site uses the generic, it is a parameter; if it is never inferred from an argument, it is probably just a concrete type wearing a costume.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "TypeScript",
+    "tags": ["typescript", "generics", "types"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20TypeScript%20generics%2C%20abstract%20angle%20brackets%20shapes%2C%20blue%20and%20white%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-01",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 19,
+    "slug": "lazy-loading-routes-in-react",
+    "title": "Lazy loading routes in React",
+    "excerpt": "Split by route, not by atom. The first paint is what users judge you on.",
+    "content": "A single JavaScript bundle means a user downloading your admin dashboard before they can read the homepage. Route-level code splitting is the cheapest, highest-impact fix available.\n\n`React.lazy` plus `Suspense` turns a component into a dynamically imported chunk. Wrap the routes in a `Suspense` boundary with a fallback that matches your layout so the wait does not shift content around.\n\nIn a Vite or webpack build the bundler then emits one chunk per route, and the browser only fetches the chunk for the page it is actually rendering. A visitor landing on the blog list never downloads the editor.\n\nThe next step, when a single route is still heavy, is to split below the route — defer a charting library or a markdown renderer until the component that needs it mounts. Measure with the network panel before deciding.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "React",
+    "tags": ["react", "performance", "code-splitting"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20lazy%20loading%20code%20chunks%2C%20floating%20blocks%20on%20demand%2C%20cyan%20and%20indigo%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-04",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 20,
+    "slug": "rate-limiting-your-api",
+    "title": "Rate limiting your API without breaking clients",
+    "excerpt": "Protect the service, tell clients the rules, and make the limits observable.",
+    "content": "Rate limiting exists to stop a single caller starving everyone else, whether through a bug, a scraped endpoint or a deliberate flood. The mechanism matters less than the contract around it.\n\nThe simplest useful algorithm is a fixed window counter: allow N requests per key per minute. It is easy to implement in memory for a single instance and cheap to reason about, with the known weakness that a caller can burst across a window boundary.\n\nA sliding window or token bucket smooths that out at the cost of a little bookkeeping. Behind multiple instances you need shared state — Redis with an atomic increment and expiry is the usual answer.\n\nWhat clients need is predictability: a `429` status, a `Retry-After` header, and ideally `RateLimit-Limit` and `RateLimit-Remaining` so well-behaved consumers can back off before they are blocked. A limit no one can see is just an outage waiting to be reported.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Security",
+    "tags": ["security", "api", "reliability"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20API%20rate%20limiting%2C%20traffic%20funnel%20and%20guardrail%2C%20red%20and%20dark%20slate%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-08",
+    "readingTimeMinutes": 7,
+    "featured": true
+  },
+  {
+    "id": 21,
+    "slug": "environment-variables-done-right",
+    "title": "Environment variables done right",
+    "excerpt": "Config that comes from the environment, is validated at boot, and never lands in git.",
+    "content": "The twelve-factor rule is simple: configuration that varies between deploys lives in the environment, not in the code. Everything a developer would want to change without a rebuild qualifies.\n\nRead them once, in one place, at startup. Scattering `process.env.X` through the codebase means you discover a missing variable only when that branch executes — usually in production.\n\nValidate at boot instead. A tiny schema check that asserts `PORT` is a number and `DATABASE_URL` exists will fail the process immediately on a bad deploy rather than half an hour later on the first request that needs it.\n\nDocument every variable in a `.env.example` that is committed, keep the real `.env` ignored, and give the values defaults where defaults make sense. A new developer should be able to clone, copy the example, and run without reading the source.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "DevOps",
+    "tags": ["devops", "configuration", "best-practices"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20environment%20configuration%2C%20key%20value%20sliders%2C%20indigo%20and%20mint%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-11",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 22,
+    "slug": "writing-good-commit-messages",
+    "title": "Writing good commit messages",
+    "excerpt": "A commit message is a letter to a stranger — usually yourself, six months from now.",
+    "content": "The diff already says what changed. The message should say why. That distinction is what makes a history useful when you are hunting for the commit that introduced a behaviour.\n\nThe conventional shape is a short imperative subject under about fifty characters, a blank line, then a body that explains the motivation and any trade-off you accepted. \"Fix bug\" tells a reader nothing; \"Handle empty page query without a 500\" tells them everything they need.\n\nImperative mood — \"add\", \"fix\", \"remove\" — reads naturally in the generated summaries that tools produce, and it keeps the subject consistent across a team.\n\nCommit in coherent units. One logical change per commit makes `git bisect`, revert and review all easier, and it is the single habit that most improves the quality of everything downstream.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Git",
+    "tags": ["git", "workflow", "collaboration"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20git%20commits%2C%20branching%20graph%20and%20message%20bubbles%2C%20orange%20and%20charcoal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-15",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 23,
+    "slug": "sql-indexes-for-beginners",
+    "title": "SQL indexes for beginners",
+    "excerpt": "An index trades write speed and disk for read speed. Knowing when that trade is worth it is the whole skill.",
+    "content": "A query without a usable index scans every row. On a table with ten thousand rows that is invisible; on ten million it is the difference between a request and a timeout.\n\nAn index is a sorted structure the database maintains alongside the data. Because it is sorted, a lookup on the indexed column can jump straight to the matching range instead of reading everything.\n\nThe cost is real. Every insert, update and delete has to update every index that covers the changed columns, and each index occupies disk. Indexing every column is a classic over-correction that makes writes slow and changes nothing about read performance.\n\nOrder matters in composite indexes: an index on `(user_id, created_at)` serves queries filtered by user, or by user and date, but not by date alone. Put the equality column first and the range column second, then check the query plan to confirm the index is actually being used.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Databases",
+    "tags": ["databases", "sql", "performance"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20SQL%20indexes%2C%20table%20rows%20with%20a%20sorted%20pointer%2C%20blue%20and%20amber%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-18",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 24,
+    "slug": "caching-strategies-for-web-apps",
+    "title": "Caching strategies for web apps",
+    "excerpt": "Cache in the right layer, invalidate on purpose, and never trust a cache you cannot clear.",
+    "content": "Caching is the highest-leverage performance work available, and also the fastest way to serve stale, confusing data. The two facts are inseparable.\n\nStart at the HTTP layer. `Cache-Control: public, max-age=60` on an API response lets browsers and CDNs do the work for you. Fingerprinted asset filenames can be cached for a year with `immutable` because the name changes whenever the content does.\n\nInside the application, cache the expensive, rarely changing lookups — a category list, a config document — with an explicit time to live. A cache without expiry is a permanent bug in waiting.\n\nInvalidation is the design decision, not an afterthought. Prefer cache keys that become invalid naturally, such as a version suffix, over logic that has to hunt down and delete entries. If you cannot name exactly when an entry should die, you are not ready to cache it.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Performance",
+    "tags": ["performance", "caching", "http"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20web%20caching%20layers%2C%20stacked%20discs%20with%20clock%2C%20lime%20green%20and%20charcoal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-22",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 25,
+    "slug": "accessible-forms-from-the-start",
+    "title": "Accessible forms from the start",
+    "excerpt": "Labels, error messages and focus order. Getting them right early is far cheaper than retrofitting.",
+    "content": "Every input needs a programmatically associated label. An `<label for=\"email\">` tied to the input's id does it, and it also enlarges the click target. A placeholder is not a label: it disappears the moment the user types.\n\nErrors belong next to the field and in the accessibility tree. Render the message, link it to the input with `aria-describedby`, and set `aria-invalid` so a screen reader announces the state instead of leaving the user to guess.\n\nDo not rely on colour alone. Red text without an icon or a word is invisible to a chunk of your audience. Say what went wrong in plain language: \"Enter an email address in the format name@example.com\".\n\nFinally, respect focus order and never remove the focus ring. Keyboard users navigate by tab, and a visible outline is the only thing telling them where they are. Group related fields in a `fieldset` with a `legend` and the whole form becomes navigable rather than guessable.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "Accessibility",
+    "tags": ["accessibility", "forms", "html"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20accessible%20forms%2C%20labelled%20inputs%20and%20focus%20ring%2C%20violet%20and%20sky%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-25",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 26,
+    "slug": "error-boundaries-in-react",
+    "title": "Error boundaries in React",
+    "excerpt": "One thrown component should not white-screen the whole application.",
+    "content": "React unmounts the entire tree when a render throws. Without a boundary, a single bad prop in one card takes down the page around it.\n\nAn error boundary is a component that catches errors from its children during rendering, in lifecycle methods and in constructors, then renders a fallback instead. It still has to be a class component, which is why this is one of the few places `componentDidCatch` survives in a hooks codebase.\n\nPlace boundaries at meaningful seams rather than one at the root. Around each route, and around any independently failing widget, so the rest of the page stays usable while the failure is contained.\n\nBoundaries do not catch errors from event handlers or from asynchronous code. Those come from `try/catch` and from a rejected promise. The division of labour is worth remembering: boundaries handle render-time surprises, your own error handling covers everything else.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "React",
+    "tags": ["react", "error-handling", "resilience"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20React%20error%20boundaries%2C%20shield%20around%20component%20blocks%2C%20rose%20and%20deep%20blue%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-06-29",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 27,
+    "slug": "npm-scripts-that-earn-their-keep",
+    "title": "npm scripts that earn their keep",
+    "excerpt": "A tiny set of memorable commands beats a wiki page nobody reads.",
+    "content": "Scripts in `package.json` are the documented entry points to a project. If a new contributor has to ask how to start the dev server, the scripts are wrong.\n\nCover the essentials: `dev`, `build`, `start`, `test`, and `lint`. Keep the names consistent across repositories so muscle memory transfers and nobody is guessing between `serve`, `run` and `dev-server`.\n\nCompose rather than duplicate. A `lint:fix` that calls the linter with `--fix`, a `test:watch` that reuses the test runner with a flag, a `ci` that chains lint, test and build so local and pipeline run the same steps.\n\nUse `pre` and `post` hooks sparingly. A `pretest` that quietly migrates a database is a surprising side effect. Explicit chains — `npm run build && npm test` — are easier to debug when something in the middle fails.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Tooling",
+    "tags": ["tooling", "npm", "developer-experience"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20npm%20scripts%2C%20terminal%20window%20and%20command%20chips%2C%20teal%20and%20graphite%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-02",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 28,
+    "slug": "connecting-react-to-a-rest-api",
+    "title": "Connecting React to a REST API",
+    "excerpt": "One fetch wrapper, one hook, and a clear separation between transport and presentation.",
+    "content": "Keep the network in one module. A small `client.js` that owns the base URL, sets headers and turns every failure into a consistent error object means components never deal with raw `Response` objects.\n\nWrap that client in a hook. A `useApi` that returns a status, data and an error removes the boilerplate of loading flags and cancelled requests from every screen, and makes the behaviour identical wherever it is used.\n\nRepresent state as a status instead of two booleans. `loading` plus `error` plus `data` admits impossible combinations such as both loading and errored. A single discriminated status cannot.\n\nAlways cancel in-flight work on unmount with an `AbortController`, and ignore the abort in the catch block. That one detail eliminates the flaky warnings and race conditions that make API-connected UIs feel unpredictable.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "React",
+    "tags": ["react", "api", "fetch"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20React%20consuming%20a%20REST%20API%2C%20UI%20panel%20linked%20to%20server%2C%20cyan%20and%20violet%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-06",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 29,
+    "slug": "avoiding-prop-drilling",
+    "title": "Avoiding prop drilling without a store",
+    "excerpt": "Composition and context solve most of it. Reach for a state library last.",
+    "content": "Prop drilling is passing a value through five components that do not use it, purely so the sixth can. It makes every intermediate layer depend on something it has no business knowing about.\n\nThe first fix is composition. Instead of passing data down so a child can render it, pass the rendered element down as `children`. The intermediate components stop needing the data at all.\n\nThe second is context, for values with a genuinely wide reach: the current user, the theme, a locale. Extract the provider and a `useX` consumer hook into the same module so the context object never leaks and consumers fail loudly when the provider is missing.\n\nSplit contexts by change frequency. A context holding both a rarely changing user and a rapidly changing counter re-renders every consumer on every tick. Two contexts, two re-render scopes.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "React",
+    "tags": ["react", "patterns", "composition"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20React%20component%20composition%2C%20nested%20blocks%20passing%20a%20token%2C%20blue%20and%20pink%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-09",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 30,
+    "slug": "understanding-the-event-loop",
+    "title": "Understanding the JavaScript event loop",
+    "excerpt": "One thread, a task queue and a microtask queue. Everything async follows from that.",
+    "content": "JavaScript runs your code on a single thread with one call stack. Asynchronous behaviour comes from the host environment — the browser or Node — scheduling work and handing results back when the stack is empty.\n\nThe loop takes a task from the macrotask queue, runs it to completion, then drains the entire microtask queue before taking the next task. Promise callbacks and `queueMicrotask` are microtasks; timers and I/O callbacks are macrotasks.\n\nThat ordering explains behaviour that otherwise looks arbitrary. A resolved promise callback always runs before a `setTimeout(..., 0)`, no matter which was written first, because the microtask queue is drained first.\n\nIt also explains why a long synchronous loop freezes the UI: nothing else can run until the stack clears. Chunking heavy work, or moving it to a worker, is the only real remedy.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "async", "fundamentals"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20the%20JavaScript%20event%20loop%2C%20circular%20arrows%20and%20queues%2C%20amber%20and%20navy%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-13",
+    "readingTimeMinutes": 8,
+    "featured": true
+  },
+  {
+    "id": 31,
+    "slug": "docker-for-node-developers",
+    "title": "Docker for Node developers",
+    "excerpt": "A Dockerfile that builds fast, runs small, and does not ship your node_modules.",
+    "content": "The goal of a container image is a reproducible runtime, not a copy of your laptop. Start from a slim base, copy `package.json` and the lockfile first, install, then copy the source. Layer caching then means an edit to a source file does not reinstall dependencies.\n\nBuild for production with `npm ci --omit=dev`. The lockfile guarantees the exact tree that passed CI, and skipping dev dependencies keeps the runtime image free of test runners and bundlers.\n\nRun as a non-root user. Creating a user and switching with `USER` costs one line and closes an escalation path that container escape exploits rely on.\n\nFinally, write a `.dockerignore` that excludes `node_modules`, `.git` and local environment files. Without it the build context bloats and you risk baking secrets into a layer that lives in the registry forever.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "DevOps",
+    "tags": ["devops", "docker", "node"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20Docker%20containers%2C%20stacked%20boxes%20and%20whale%20motif%2C%20blue%20and%20mint%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-16",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 32,
+    "slug": "rest-vs-graphql",
+    "title": "REST vs GraphQL: an honest comparison",
+    "excerpt": "Neither wins outright. The shape of your data and your clients decides.",
+    "content": "REST organises the API around resources and HTTP semantics. It is cacheable by default, easy to explore in a browser, and every tool in the ecosystem understands it. Its weakness is over-fetching: a mobile client often needs a fraction of what an endpoint returns.\n\nGraphQL lets the client declare exactly the fields it wants in a single request, which is genuinely valuable when many screens share a graph of related data. The cost is a query language to learn, resolvers to maintain, and access control that has to be enforced per field rather than per route.\n\nHTTP caching is the decisive practical difference. A REST GET response slots into CDNs and browser caches for free; GraphQL typically posts to a single endpoint and needs application-level caching to get the same benefit.\n\nThe honest recommendation for most teams is REST until a client actually suffers. Firm up the resource design, add field selection where it hurts, and revisit GraphQL when the number of bespoke endpoints starts to feel like a symptom rather than a solution.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "API Design",
+    "tags": ["api", "graphql", "architecture"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20REST%20versus%20GraphQL%2C%20two%20contrasting%20diagrams%2C%20slate%20blue%20and%20magenta%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-20",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 33,
+    "slug": "debouncing-and-throttling",
+    "title": "Debouncing and throttling",
+    "excerpt": "One waits for quiet, the other paces the calls. Using the wrong one is a bug you can feel.",
+    "content": "Debouncing delays execution until the calls stop. Type in a search box and you want one request after the user pauses, not one per keystroke. That is debounce.\n\nThrottling caps how often a function may run. Scroll and resize handlers fire dozens of times a second; a throttle that lets the handler run every hundred milliseconds keeps the UI responsive without doing needless work.\n\nImplement both with a timer rather than a counter. A debounce resets the timer on every call; a throttle starts a timer that ignores calls while it is pending. Retain the latest arguments so the trailing call uses fresh values.\n\nRemember the cleanup. A debounced handler that outlives its component will call a stale setter. Return a cancel function and invoke it in the effect cleanup so pending timers never fire after unmount.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "performance", "ui"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20debounce%20and%20throttle%2C%20timing%20pulses%20and%20gates%2C%20amber%20and%20deep%20blue%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-23",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 34,
+    "slug": "responsive-design-without-media-queries",
+    "title": "Responsive design without media queries",
+    "excerpt": "Intrinsic layout lets components adapt to their container instead of the viewport.",
+    "content": "Media queries ask about the viewport, but components care about their own space. A card in a sidebar and the same card in the main column hit the same breakpoint at very different widths.\n\nContainer queries fix that directly: declare `container-type: inline-size` on the parent, then write rules that respond to the container's size. The component becomes genuinely reusable because it adapts to wherever you place it.\n\nFluid sizing removes the rest of the breakpoints. `clamp(1rem, 2.5vw, 2rem)` scales a heading smoothly between a floor and a ceiling with no steps and no jumps.\n\nAdd `minmax` with `auto-fit` for grids that reflow on their own — `repeat(auto-fit, minmax(280px, 1fr))` gives you a card wall that goes from four columns to one and never needs a media query to do it.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "CSS",
+    "tags": ["css", "responsive", "layout"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20fluid%20responsive%20layout%2C%20flexible%20frames%20resizing%2C%20coral%20and%20teal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-27",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 35,
+    "slug": "testing-api-endpoints-with-supertest",
+    "title": "Testing API endpoints with Supertest",
+    "excerpt": "Exercise the real HTTP stack in-process, with no port and no flakiness.",
+    "content": "Supertest takes your Express app — the exported module, not a running server — and fires requests at it in memory. No port binding, no startup timing, no port collisions in CI.\n\nThe pattern that keeps tests fast is to import `app` from a module that composes middleware and routes but never calls `listen`. That separation between composing an app and running it is worth designing for from the first commit.\n\nAssert on the contract, not the implementation. Check the status code, the shape of the envelope, and that a missing post returns a 404 with your standard error body. Those are the promises clients depend on.\n\nCover the edges too: invalid query parameters should be a 400, an out-of-range page a 404, a normal request a 200 with the expected count. A dozen such tests catch the regressions that break clients without breaking your own UI.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Testing",
+    "tags": ["testing", "api", "express"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20API%20testing%2C%20request%20arrows%20into%20a%20checkmark%2C%20purple%20and%20yellow%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-07-30",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 36,
+    "slug": "refactoring-legacy-code-safely",
+    "title": "Refactoring legacy code safely",
+    "excerpt": "Pin the behaviour with tests, change one axis at a time, and never mix a refactor with a feature.",
+    "content": "The first move in unfamiliar code is not to improve it, it is to understand it. Write a test that captures what it currently does — even the parts that look wrong — so you have a safety net before you touch anything.\n\nThen change one thing per commit. Renaming, extracting a function and altering a branch in a single diff makes the review impossible and the rollback all-or-nothing. Small, reversible steps let you stop anywhere.\n\nSeparate refactoring from behaviour change completely. A refactor should leave every test green without edits; if a test needs updating, you changed behaviour and that deserves its own commit and its own justification.\n\nThe end state is not the point. Refactoring is continuous — you improve the areas you must touch for the current task and leave the rest, rather than planning a rewrite that never ships.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Career",
+    "tags": ["refactoring", "testing", "craft"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20refactoring%20code%2C%20blocks%20being%20rearranged%20safely%2C%20warm%20orange%20and%20plum%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-03",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 37,
+    "slug": "handling-file-uploads-in-express",
+    "title": "Handling file uploads in Express",
+    "excerpt": "Multipart parsing, size limits, and treating every filename as hostile.",
+    "content": "Uploads arrive as `multipart/form-data`, which the built-in JSON parser ignores. A middleware such as `multer` parses the stream and exposes the files alongside the text fields.\n\nSet a size limit explicitly. Without one, a single request can fill the disk or exhaust memory, and the failure arrives as an outage rather than a validation message. Reject oversized files with a 413 and a clear body.\n\nValidate the type by content, not by the extension the client supplied. The `Content-Type` header and the filename are both attacker-controlled. Check magic bytes or re-encode the image before storing it.\n\nFinally, never trust the filename. Generate your own identifier, store files outside the web root, and serve them through a route that checks authorisation. A path built from user input is a directory traversal vulnerability in waiting.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Node.js",
+    "tags": ["node", "express", "security"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20file%20uploads%2C%20cloud%20arrow%20into%20a%20document%20stack%2C%20green%20and%20slate%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-06",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 38,
+    "slug": "server-state-with-react-query",
+    "title": "Server state is not client state",
+    "excerpt": "Caching, refetching and staleness are a different problem from component state. Treat them separately.",
+    "content": "Copying fetched data into component state is the root of a family of bugs: stale copies, duplicated requests and manual refetches scattered through effects.\n\nServer state has properties client state does not: it lives elsewhere, it can go stale without you knowing, and it is shared between screens. Caching libraries like React Query model those properties directly.\n\nThey give you a cache keyed by query, deduplication of simultaneous requests, background refetching on focus, and explicit invalidation after a mutation. All the plumbing you would otherwise hand-roll badly.\n\nEven if you never adopt a library, adopt the mental model. Keep the cache as the single source of truth for remote data, derive what you render from it, and let mutations invalidate rather than patch.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "React",
+    "tags": ["react", "data-fetching", "state"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20server%20state%20caching%2C%20database%20linked%20to%20UI%20with%20refresh%20icon%2C%20cyan%20and%20indigo%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-10",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 39,
+    "slug": "web-accessibility-checklist",
+    "title": "A pragmatic web accessibility checklist",
+    "excerpt": "Semantics, keyboard, contrast, labels. Four areas that cover most real-world failures.",
+    "content": "Start with semantics. Use `button` for actions, `a` for navigation, and headings in order. Screen readers build their navigation model from these, and no amount of ARIA rescues a `div` pretending to be a control.\n\nThen keyboard. Every interactive element must be reachable by tab and operable by enter or space, with a visible focus indicator. Trap focus only inside genuine modals, and always return it to the trigger on close.\n\nContrast is measurable: a 4.5 to 1 ratio for body text, 3 to 1 for large text, using a checker rather than your eye. This one test surfaces issues that affect far more users than any single assistive technology.\n\nFinally, labels and alternates. Every input gets a label, every image gets meaningful alt text or an empty one if purely decorative, and every error is announced. Audit with the keyboard alone — it is the fastest reality check available.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "Accessibility",
+    "tags": ["accessibility", "html", "ux"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20web%20accessibility%2C%20universal%20access%20symbols%20and%20checklist%2C%20violet%20and%20sky%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-13",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 40,
+    "slug": "designing-a-design-system",
+    "title": "Designing a design system that survives",
+    "excerpt": "Tokens, primitives, patterns. Ship the smallest layer that removes duplication.",
+    "content": "A design system is not a component library. It is a shared language — tokens for colour, spacing and type, plus the components built from them — owned jointly by design and engineering.\n\nStart with tokens because they are the change that propagates. A spacing scale and a colour palette expressed as CSS custom properties let a rebrand touch one file instead of hundreds of rules.\n\nThen build primitives: Button, Input, Card. Resist the urge to encode every product-specific layout into the system. A component with eleven boolean props for eleven one-off screens is a design problem wearing a component costume.\n\nVersion it and document it. The components need to be installable, changelogged and previewable in isolation, or teams will quietly fork them and the system becomes an archaeology project.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Design Systems",
+    "tags": ["design-systems", "css", "ui"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20design%20systems%2C%20token%20swatches%20and%20component%20blocks%2C%20coral%20and%20indigo%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-17",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 41,
+    "slug": "monitoring-node-apps-in-production",
+    "title": "Monitoring Node apps in production",
+    "excerpt": "Logs, metrics and traces for a service you cannot attach a debugger to.",
+    "content": "In production you cannot pause and inspect. You have three signals instead: structured logs for what happened, metrics for how the system behaves over time, and traces for where a request spent its time.\n\nLog in JSON. A message interpolated into a string is unqueryable, whereas `{\"level\":\"error\",\"route\":\"/api/posts\",\"status\":500}` lets you ask real questions later. Include a request id on every line so a single user journey can be reconstructed.\n\nWatch a small set of metrics closely: request rate, error rate, latency percentiles and event loop lag. Averages hide the problem; the ninety-fifth percentile is what users actually experience.\n\nAdd health and readiness endpoints, and alert on symptoms rather than causes. The question to encode is not \"is CPU high\" but \"are users failing to get responses\", and page a human only when the answer is yes.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "DevOps",
+    "tags": ["devops", "observability", "node"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20production%20monitoring%2C%20dashboards%20and%20alert%20bell%2C%20lime%20green%20and%20charcoal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-20",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 42,
+    "slug": "jwt-authentication-explained",
+    "title": "JWT authentication explained without the myths",
+    "excerpt": "What a token actually proves, and the storage decision that matters far more than the algorithm.",
+    "content": "A JSON Web Token is a signed claim, not an encrypted one. Anyone holding it can read the payload — signatures prove integrity and origin, they do not keep secrets. Never put anything sensitive inside.\n\nThe auth flow is straightforward: the client exchanges credentials for a token, sends it on subsequent requests in an `Authorization: Bearer` header, and the server verifies the signature without a database lookup. That statelessness is the appeal and also the problem, because revocation means a blocklist or short lifetimes.\n\nThe storage question is the one that causes real incidents. `localStorage` is readable by any script and therefore exposed to cross-site scripting. An `HttpOnly`, `Secure`, `SameSite` cookie cannot be read by JavaScript, at the cost of needing CSRF protection.\n\nThe pragmatic answer for most apps is a short-lived access token plus a longer-lived refresh token, with the refresh token in an HttpOnly cookie and rotation on every use. Combine that with https everywhere and it is a defensible baseline.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Security",
+    "tags": ["security", "auth", "jwt"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20JWT%20authentication%2C%20key%20and%20token%20routing%2C%20red%20and%20dark%20slate%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-24",
+    "readingTimeMinutes": 8,
+    "featured": true
+  },
+  {
+    "id": 43,
+    "slug": "modern-css-selectors",
+    "title": "Modern CSS selectors worth knowing",
+    "excerpt": "is, where, has and nth-child with an of clause. Less markup, fewer classes.",
+    "content": "`:is()` lets you group a selector list without repeating the whole thing: `:is(h1, h2, h3) + p` styles paragraphs after any heading level. It also forgives invalid selectors in the list, so a vendor-specific selector cannot kill the whole rule.\n\n`:where()` behaves the same but contributes zero specificity. That makes it perfect for resets and defaults, because any later rule overrides it without needing a fight or an `!important`.\n\n`:has()` finally lets a parent react to its children — `.card:has(img)` styles only cards containing an image. Layouts that needed a JavaScript class toggle are now a selector.\n\n`nth-child(An+B of S)` adds a filter, so `li:nth-child(odd of .visible)` counts only visible items. Together these collapse whole categories of JavaScript into the stylesheet, where they belong.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "CSS",
+    "tags": ["css", "selectors", "modern-web"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20modern%20CSS%20selectors%2C%20targeting%20reticles%20over%20elements%2C%20coral%20and%20teal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-27",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 44,
+    "slug": "reducing-your-bundle-size",
+    "title": "Reducing your JavaScript bundle size",
+    "excerpt": "Measure first, then split, tree-shake and defer. Guessing is how you waste a sprint.",
+    "content": "Open the bundle analyser before changing anything. A treemap almost always contains a surprise: a date library importing every locale, a UI kit pulled in for one component, a polyfill you no longer need.\n\nThe cheapest wins are imports. Importing a single function from a large library sometimes drags in the whole package unless it is tree-shakeable. Check the module fields, and prefer packages marketed as ESM with side-effect-free exports.\n\nThen split. Route-level chunks mean the login page does not ship the dashboard, and a dynamic `import()` inside an event handler defers a heavy editor until the user opens it.\n\nFinally, defer what is not needed for first paint. Load analytics and chat widgets after the page is interactive, and set the right `loading` and `fetchpriority` hints on images. Every kilobyte you move off the critical path is a faster interaction.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Performance",
+    "tags": ["performance", "bundling", "frontend"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20bundle%20size%20optimisation%2C%20shrinking%20package%20blocks%2C%20lime%20green%20and%20charcoal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-08-31",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 45,
+    "slug": "writing-documentation-developers-read",
+    "title": "Writing documentation developers actually read",
+    "excerpt": "Lead with the task, show a working example, and keep it beside the code.",
+    "content": "Documentation fails when it is organised around the system rather than the reader's goal. Someone arriving at your API docs wants to make one call succeed, not read a taxonomy of concepts.\n\nLead with a runnable example. A curl command and its response, or a five-line snippet that works when pasted, teaches more in ten seconds than three paragraphs of prose. Put it first, and keep the reference material below it.\n\nThe best documentation lives in the repository. A README that explains how to install, run and test, doc comments on the non-obvious functions, and a short architecture note for anything surprising. Anything further away drifts out of date within a release or two.\n\nTreat stale docs as bugs. If a change makes a sentence untrue, updating that sentence belongs in the same pull request as the change.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Career",
+    "tags": ["documentation", "collaboration", "craft"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20developer%20documentation%2C%20open%20book%20and%20code%20snippet%2C%20warm%20orange%20and%20plum%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-03",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 46,
+    "slug": "immutability-in-javascript",
+    "title": "Immutability in JavaScript, practically",
+    "excerpt": "Copy the path you change, leave the rest alone, and let reference equality do the work.",
+    "content": "Mutating an object that another part of the program holds a reference to is how you get bugs that cannot be reproduced. The fix is not to freeze everything, it is to update by producing a new value.\n\nThe idiom is to copy the path from the root to the change and share everything else. Adding a post to a list is `[...posts, post]`; updating one item is `posts.map(p => p.id === id ? { ...p, title } : p)`. Untouched items keep their identity, which is exactly what memoisation needs.\n\nSpread syntax is shallow, so nesting matters. For a deep update you reproduce each level along the path; everything off the path is reused by reference, which keeps the copy cheap.\n\nWith this discipline, `React.memo` and dependency arrays work as intended, because a value that did not change compares equal by reference. Immutability is not a style preference; it is what makes referential checks meaningful.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "immutability", "react"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20immutable%20data%2C%20branching%20copies%20of%20a%20tree%2C%20amber%20and%20navy%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-07",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 47,
+    "slug": "building-a-cli-with-node",
+    "title": "Building a CLI with Node.js",
+    "excerpt": "Argument parsing, helpful output and a sane exit code. The details that make a tool pleasant.",
+    "content": "A CLI is an interface, and the same rules apply as to a UI. Discovery matters: `--help` should list the commands and options without requiring documentation, and every error message should say what to do next.\n\nParse arguments with a library rather than by hand. It handles short and long flags, `--key=value` and `--key value`, defaults, and the generated usage text you would otherwise forget to write.\n\nWrite to the right streams. Normal output goes to stdout so it can be piped; progress, warnings and errors go to stderr so they do not corrupt that output. This is the difference between a tool that composes and one that does not.\n\nExit deliberately. `process.exitCode = 1` on failure lets pending writes flush, and a nonzero code is what makes the tool usable in a shell script or a CI step. A command that fails silently with exit code zero is worse than one that crashes.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Node.js",
+    "tags": ["node", "cli", "tooling"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20command%20line%20tools%2C%20terminal%20prompt%20with%20flags%2C%20green%20and%20slate%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-10",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 48,
+    "slug": "form-validation-patterns",
+    "title": "Form validation patterns in React",
+    "excerpt": "Validate on blur and on submit, not on every keystroke. Users hate being wrong while typing.",
+    "content": "The timing of validation is a user-experience decision, not an implementation detail. Validating on every keystroke tells a person their email is invalid while they are halfway through typing it.\n\nA workable default: validate a field on blur the first time, then live once it has been touched. Already-validated fields give immediate feedback; untouched ones stay quiet.\n\nKeep the validation rules as pure functions so they can be tested and reused. A schema per form — required, format, cross-field dependencies such as password confirmation — beats imperative checks scattered through handlers.\n\nOn submit, focus the first invalid field and move focus there. It is a small touch that saves keyboard users an entire tab-through, and it is the kind of detail that separates a form that works from one that feels considered.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "React",
+    "tags": ["react", "forms", "ux"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20form%20validation%2C%20input%20fields%20with%20check%20marks%2C%20blue%20and%20pink%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-14",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 49,
+    "slug": "mocking-in-tests-without-regret",
+    "title": "Mocking in tests without regret",
+    "excerpt": "Mock at the boundary you do not own, and keep the rest real.",
+    "content": "Every mock is a promise about how something behaves. When the real thing changes and the mock does not, tests stay green while production breaks. That is the cost to manage, not to ignore.\n\nThe safest place to mock is a boundary you do not control: the network, the clock, a payment provider. Those are the interactions that are slow, costly or non-deterministic, and the ones worth replacing.\n\nAvoid mocking your own modules. If a test stubs an internal function, it asserts on implementation rather than behaviour and breaks on every refactor. Inject the dependency instead, and pass a fake at the edge.\n\nPrefer fakes to assertions about calls. A small in-memory implementation of a repository is easier to read than a chain of expectations, and it exercises more of your real code. Assert on the outcome the user would see.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Testing",
+    "tags": ["testing", "mocking", "design"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20test%20doubles%2C%20placeholder%20shapes%20matching%20originals%2C%20purple%20and%20yellow%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-17",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 50,
+    "slug": "semantic-html-matters",
+    "title": "Semantic HTML still matters",
+    "excerpt": "The right element is faster than the right framework setting, and it comes with accessibility built in.",
+    "content": "Choosing `button` over a clickable `div` gets you keyboard activation, focus handling and the correct role in the accessibility tree for free. Reimplementing all three in JavaScript is a chore you opted into.\n\nLandmarks do the same at page scale. `header`, `nav`, `main`, `footer` and `aside` give assistive technology a map, and give you a layout structure that reads clearly without any class names.\n\nHeadings are the table of contents. One `h1` per page and a nesting order without gaps lets both people and crawlers skim. Skipping from `h1` to `h4` for visual size is what CSS is for.\n\nDo not reach for ARIA first. The rule of thumb is that the best ARIA is no ARIA, because native elements are already tested against every browser and screen reader combination. Use the attribute only when no element expresses the semantics you need.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "Web",
+    "tags": ["html", "accessibility", "fundamentals"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20semantic%20HTML%2C%20labelled%20document%20blocks%2C%20violet%20and%20sky%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-21",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 51,
+    "slug": "optimistic-ui-updates",
+    "title": "Optimistic UI updates, done carefully",
+    "excerpt": "Show the result before the server confirms it, then reconcile honestly when it fails.",
+    "content": "Waiting several hundred milliseconds for a round trip after a click makes an app feel slow even when it is not. An optimistic update applies the change immediately and treats the server response as confirmation.\n\nThe first rule is to keep the previous value. If the request fails you must roll back to the exact prior state, not to a guess, or the UI ends up showing something that never existed.\n\nThe second rule is to make the failure visible. A silent revert looks like the app ignored the click. Roll back, surface a message, and offer a retry.\n\nThe third is to handle out-of-order responses. If two updates target the same item, applying them in arrival order can produce the wrong final state. Attach a sequence or timestamp and discard stale responses rather than trusting whichever finishes last.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "React",
+    "tags": ["react", "ux", "data-fetching"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20optimistic%20UI%2C%20instant%20check%20with%20sync%20arrows%2C%20cyan%20and%20violet%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-24",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 52,
+    "slug": "database-migrations-without-fear",
+    "title": "Database migrations without fear",
+    "excerpt": "Forward-only, one change per file, and never assume the old code is gone.",
+    "content": "A migration is a version control commit for your schema. Keeping them in the repository, numbered and applied in order, means any environment can be rebuilt from nothing and any change can be traced to a deployment.\n\nThe hard part is that old and new code run simultaneously during a rolling deploy. Dropping a column the moment the schema changes breaks every instance still running the previous release.\n\nThe pattern that avoids this is expand and contract. Add the new column, deploy code that writes to both, backfill, switch reads over, stop writing to the old column, and only then drop it — four deploys instead of one, and zero downtime.\n\nKeep each migration small and reversible where practical, and test the migration against a copy of production data. A migration that takes a long lock on a large table is an outage, not a deploy.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Databases",
+    "tags": ["databases", "migrations", "devops"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20database%20migrations%2C%20numbered%20schema%20steps%2C%20blue%20and%20amber%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-09-28",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 53,
+    "slug": "logging-best-practices",
+    "title": "Logging best practices for backend services",
+    "excerpt": "Log events, not narration. Include context, pick levels deliberately, and never log secrets.",
+    "content": "A log line should describe an event that happened, with enough context to act on it. \"Processing request\" tells you nothing; \"order payment failed\" with an order id, a provider and a reason tells you where to look.\n\nChoose levels by what a human should do. `error` means someone should investigate, `warn` means something unexpected but handled, `info` records a meaningful state change, `debug` is for development only. Logging everything at `info` is how alerts get ignored.\n\nAlways include a correlation id so a request can be followed across services and interleaved log lines can be reassembled into a story.\n\nAnd keep credentials out. Passwords, tokens and full card numbers must never reach a log file, because logs are copied, shipped and retained far more casually than a database. Redact at the point of logging, not by hoping.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Node.js",
+    "tags": ["node", "observability", "best-practices"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20structured%20logging%2C%20log%20lines%20with%20levels%2C%20green%20and%20slate%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-01",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 54,
+    "slug": "websockets-vs-server-sent-events",
+    "title": "WebSockets vs Server-Sent Events",
+    "excerpt": "One is bidirectional, one is a stream. Most real-time features only need the stream.",
+    "content": "Server-Sent Events is a plain HTTP response that stays open and pushes text frames to the browser. It reconnects automatically, it flows through proxies and CDNs, and the client API is a few lines. For a feed, a notification badge or a progress stream it is the right tool.\n\nWebSockets give you a full duplex channel. That matters for chat, collaborative editing and anything where the client sends as often as it receives. The price is a separate protocol, your own reconnection and heartbeat logic, and more infrastructure to keep the connections alive.\n\nA useful default is to reach for SSE until you can name the feature that requires the client to push. Plenty of products ship a WebSocket layer and use it in one direction only.\n\nEither way, design for disconnection. Connections drop, tabs sleep, and phones switch networks. Make the client able to resume from the last event it processed, and the feature survives the real world.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Web APIs",
+    "tags": ["websockets", "sse", "realtime"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20realtime%20web%20transport%2C%20two-way%20arrow%20versus%20one-way%20stream%2C%20indigo%20and%20mint%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-05",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 55,
+    "slug": "code-review-etiquette",
+    "title": "Code review etiquette that speeds teams up",
+    "excerpt": "Review the code, ask real questions, and make small pull requests a habit.",
+    "content": "A review is a conversation about a change, not a verdict on a person. Framing comments as questions — \"what happens here if the list is empty?\" — gets a better outcome than a command, and costs nothing.\n\nKeep pull requests small. A review of fifty lines gets read carefully; a review of a thousand gets skimmed and approved. If a change is large, split it into a sequence that is each independently reviewable.\n\nSeparate blocking issues from suggestions and say which is which. Not every preference needs to be addressed, and muddying the two trains people to ignore feedback altogether.\n\nThe reviewer's job is to catch correctness, security and maintainability problems, not to rewrite the change in their own style. Approve when it is better than what is there and correct, even if it is not exactly how you would have written it.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Career",
+    "tags": ["career", "collaboration", "process"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20code%20review%2C%20two%20speech%20bubbles%20over%20a%20diff%2C%20warm%20orange%20and%20plum%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-08",
+    "readingTimeMinutes": 5,
+    "featured": false
+  },
+  {
+    "id": 56,
+    "slug": "git-rebase-vs-merge",
+    "title": "Git rebase vs merge",
+    "excerpt": "Merge preserves history, rebase rewrites it. Pick a policy and apply it consistently.",
+    "content": "A merge commit records that two lines of development joined. Nothing is rewritten, the topology is truthful, and the cost is a history that can look like a subway map.\n\nRebase replays your commits on top of a new base, producing a linear history as though you had started from the latest main. The result is easier to read and easier to bisect, but it rewrites commit hashes, so it must never be applied to commits anyone else has pulled.\n\nA workable convention is to rebase your own feature branch onto main to stay current, then merge it in with a merge commit or a squash so the mainline records one intentional entry per change.\n\nInteractive rebase is the real prize: squash fix-up commits, reorder for clarity, and fix a message before anyone sees it. Cleaning up before review is a courtesy to every future reader of the log.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "Git",
+    "tags": ["git", "workflow", "collaboration"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20git%20history%2C%20linear%20versus%20branching%20graphs%2C%20orange%20and%20charcoal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-12",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 57,
+    "slug": "feature-flags-in-practice",
+    "title": "Feature flags in practice",
+    "excerpt": "Ship behind a switch, roll out gradually, and delete the flag when it is done.",
+    "content": "A feature flag decouples deployment from release. Code can be merged and deployed while the behaviour stays off, which turns a risky big-bang release into a gradual rollout you can stop.\n\nThe flags that earn their keep are short-lived and specific: a release toggle for a new screen, an experiment toggle for a variant, an operational toggle for a risky dependency. Give each one an owner and an intended removal date.\n\nEvaluate flags on the server where you can. It keeps the decision in one place, prevents stale client caches from showing the wrong branch, and makes the rollout measurable.\n\nThe failure mode is accumulation. A codebase with two hundred permanent flags is unmaintainable, and every stale flag is a branch nobody dares delete. Removing the flag as part of the same work that finishes the rollout is the discipline that keeps the practice healthy.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "Architecture",
+    "tags": ["architecture", "deployment", "process"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20feature%20flags%2C%20toggle%20switches%20and%20rollout%20percentages%2C%20teal%20and%20graphite%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-15",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 58,
+    "slug": "image-optimisation-for-the-web",
+    "title": "Image optimisation for the web",
+    "excerpt": "Right format, right size, explicit dimensions. Most page weight lives in the images.",
+    "content": "Images are usually the largest part of a page, which makes them the largest opportunity. The first decision is format: WebP or AVIF for photographs, SVG for icons and logos, and JPEG only as a legacy fallback.\n\nServe the size you need. A 3000-pixel hero rendered at 800 is wasted bytes and wasted decode time. Generate a few widths, let `<img srcset>` and `sizes` choose, and the browser picks the appropriate file for the device.\n\nAlways set width and height, or an aspect-ratio in CSS. Without them the browser cannot reserve space, and the layout shifts as each image loads — the exact thing the Cumulative Layout Shift metric punishes.\n\nThen defer the ones below the fold with `loading=\"lazy\"`, and give the hero the opposite treatment: `fetchpriority=\"high\"` and a preload hint so it starts as early as possible. Those two attributes alone move the largest-contentful-paint number meaningfully.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Performance",
+    "tags": ["performance", "images", "frontend"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20web%20image%20optimisation%2C%20resizing%20frames%20and%20format%20chips%2C%20lime%20green%20and%20charcoal%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-19",
+    "readingTimeMinutes": 6,
+    "featured": false
+  },
+  {
+    "id": 59,
+    "slug": "avoiding-memory-leaks-in-spas",
+    "title": "Avoiding memory leaks in single-page apps",
+    "excerpt": "Listeners, timers, subscriptions and closures. Leaks in a SPA accumulate instead of resetting.",
+    "content": "A server-rendered page throws its memory away on navigation. A single-page app does not, so anything you forget to clean up keeps accumulating for the whole session, and the tab slows to a crawl an hour in.\n\nThe usual suspects are all things that outlive a component: a `window` event listener, a `setInterval`, a WebSocket subscription, an observer. Each one holds a reference to the closure that registered it, and through it to the component's data.\n\nReact's effect cleanup is the remedy, and it is not optional. Register in the effect, unregister in the returned function, and be sure the effect returns a cleanup whenever it starts anything persistent.\n\nFetch requests count too. An in-flight request resolved after unmount updates state that no longer exists and keeps the component alive in a closure. Aborting with an `AbortController` in the cleanup closes both holes at once.",
+    "author": {
+      "name": "Ayesha Khan",
+      "avatarInitials": "AK"
+    },
+    "category": "JavaScript",
+    "tags": ["javascript", "performance", "react"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20memory%20leaks%2C%20droplets%20escaping%20a%20container%2C%20amber%20and%20navy%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-22",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 60,
+    "slug": "api-versioning-strategies",
+    "title": "API versioning strategies",
+    "excerpt": "Version the contract on purpose, and give clients a migration path you can defend.",
+    "content": "Every API changes, and the only question is whether you break consumers when it does. Versioning is the mechanism that lets you add capability without an outage for existing clients.\n\nThe simplest approach is a URL prefix, `/api/v1/`, which is explicit, cacheable and easy to route. Header-based version negotiation keeps URLs stable but is harder to test and debug, since the version is invisible in a browser address bar.\n\nAdditive changes do not need a new version. New fields in a response, new optional parameters and new endpoints are safe if clients are expected to ignore what they do not understand. Write that expectation into your contract, and document it.\n\nWhen a break is unavoidable, ship the new version alongside the old, publish a deprecation date, and monitor usage per version. Retiring a version no one is calling is easy; discovering a forgotten integration the hard way is not.",
+    "author": {
+      "name": "Mei Lin",
+      "avatarInitials": "ML"
+    },
+    "category": "API Design",
+    "tags": ["api", "versioning", "rest"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20API%20versioning%2C%20parallel%20version%20tracks%2C%20slate%20blue%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-24",
+    "readingTimeMinutes": 7,
+    "featured": false
+  },
+  {
+    "id": 61,
+    "slug": "cicd-for-small-teams",
+    "title": "CI/CD for small teams",
+    "excerpt": "One pipeline that lints, tests and builds on every push. Keep it fast or nobody trusts it.",
+    "content": "Continuous integration starts as a single job: on every push, install dependencies, lint, run the tests and build. That alone catches the majority of integration mistakes before they reach a shared branch.\n\nSpeed is the feature. A pipeline that takes twenty minutes gets bypassed, so cache the dependency install, run jobs in parallel where they are independent, and fail fast on lint before spending time on the full build.\n\nFor delivery, start with a scripted deploy that anyone can run and that a machine can run identically. Deploy on merge to main, keep the artefact that was tested, and make rollback a redeploy of the previous artefact rather than a rebuild.\n\nAdd gates as the team grows: required reviews, a preview environment per pull request, a smoke test against the deployed URL. Each addition should remove a class of mistake, and anything that does not can wait.",
+    "author": {
+      "name": "Daniel Okoro",
+      "avatarInitials": "DO"
+    },
+    "category": "DevOps",
+    "tags": ["devops", "ci-cd", "automation"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20CI%20CD%20pipelines%2C%20gates%20and%20flowing%20commits%2C%20indigo%20and%20mint%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-26",
+    "readingTimeMinutes": 8,
+    "featured": false
+  },
+  {
+    "id": 62,
+    "slug": "staying-current-as-a-developer",
+    "title": "Staying current without burning out",
+    "excerpt": "Depth beats novelty. Choose a few sources, build small things, and ignore the rest.",
+    "content": "The firehose of new frameworks is not a signal about what matters. Most of what ships each month is a variation on an idea that already exists, and trying to track all of it is a direct route to exhaustion.\n\nPick a small number of sources you trust and read them properly instead of skimming everything. One good newsletter, one or two blogs, and the release notes of the tools you actually use will cover more ground than a hundred tabs.\n\nLearning that sticks is built, not read. Recreate a small version of the thing you are curious about, in an afternoon, and you will understand it far better than a tutorial series would give you.\n\nFinally, invest in the durable layer: HTTP, data structures, the browser platform, debugging, reading unfamiliar code. Those skills transfer across every framework you will ever be asked to learn, and they are the ones that make the new thing cheap.",
+    "author": {
+      "name": "Sofia Marchetti",
+      "avatarInitials": "SM"
+    },
+    "category": "Career",
+    "tags": ["career", "learning", "growth"],
+    "coverImage": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=flat%20vector%20blog%20cover%20about%20continuous%20learning%2C%20a%20few%20chosen%20paths%20among%20many%2C%20warm%20orange%20and%20plum%20palette%2C%20minimal&image_size=landscape_4_3",
+    "publishedAt": "2026-10-27",
+    "readingTimeMinutes": 6,
+    "featured": false
   }
 ]
